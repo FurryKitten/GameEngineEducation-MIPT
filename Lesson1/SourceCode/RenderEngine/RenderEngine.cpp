@@ -34,6 +34,7 @@ CRenderEngine::CRenderEngine(HINSTANCE hInstance)
 	bgfx::setViewRect(0, 0, 0, bgfx::BackbufferRatio::Equal);
 
 	m_defaultCube = new Cube();
+	m_defaultPrism = new Prism();
 }
 
 CRenderEngine::~CRenderEngine()
@@ -91,20 +92,34 @@ HWND CRenderEngine::InitMainWindow(HINSTANCE hInstance)
 	return hwnd;
 }
 
+uint32_t count = 0;
 void CRenderEngine::Update()
 {
+	++count;
+
 	const bx::Vec3 at = { 0.0f, 0.0f,  0.0f };
-	const bx::Vec3 eye = { 0.0f, 10.0f, -5.0f };
+	const bx::Vec3 eye = { 0.0f, 5.0f, -5.0f };
+	//const bx::Vec3 at = { bx::sin(count * 0.001f) * 5.0f, 0.0f,  0.0f };
+	//const bx::Vec3 eye = { bx::sin(count * 0.001f) * 5.0f, bx::sin(count * 0.001f) * 5.0f, -5.0f };
+
 	float view[16];
 	bx::mtxLookAt(view, eye, at);
 	float proj[16];
 	bx::mtxProj(proj, 60.0f, float(m_Width) / float(m_Height), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
 	bgfx::setViewTransform(0, view, proj);
 
-	bgfx::setVertexBuffer(0, m_defaultCube->GetVertexBuffer());
+	/*bgfx::setVertexBuffer(0, m_defaultCube->GetVertexBuffer());
 	bgfx::setIndexBuffer(m_defaultCube->GetIndexBuffer());
+	bgfx::submit(0, m_defaultCube->GetProgramHandle());*/
 
-	bgfx::submit(0, m_defaultCube->GetProgramHandle());
+	bgfx::setVertexBuffer(0, m_defaultPrism->GetVertexBuffer());
+	bgfx::setIndexBuffer(m_defaultPrism->GetIndexBuffer());
+
+	float mtx[16];
+	bx::mtxRotateXYZ(mtx, bx::sin(count * 0.0005f), bx::sin(count * 0.001f), bx::sin(count * 0.0007f));
+	bgfx::setTransform(mtx);
+
+	bgfx::submit(0, m_defaultPrism->GetProgramHandle());
 
 	bgfx::touch(0);
 
