@@ -3,22 +3,27 @@
 #include "Common.h"
 #include "INIReader.h"
 
-enum INPUTS
+enum INPUT_ACTIONS
 {
-	UP = 'W',
-	DOWN = 'S',
-	LEFT = 'A',
-	RIGHT = 'D'
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
 };
+
 
 class InputSystem
 {
 public:
 	InputSystem(std::string configFile);
 
-	bool keyPressed(int keycode);
-
+	bool actionKeyPressed(int actionCode);
+	void mapKey(std::string keyName, int keyCode);
+	void mapAction(int actionCode, std::string keyName);
+	
 private:
 	HKL kbl;
 	INIReader configReader;
+	std::map<std::string, int> keyMap;
+	std::map<int, std::string> actionMap;
 };

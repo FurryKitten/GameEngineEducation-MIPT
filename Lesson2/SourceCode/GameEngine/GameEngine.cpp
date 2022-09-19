@@ -19,19 +19,19 @@
 void getInputVelocity(InputSystem& inputSystem, bx::Vec3& vel)
 {
     vel = { 0.f, 0.f, 0.f };
-    if (inputSystem.keyPressed(INPUTS::UP))
+    if (inputSystem.actionKeyPressed(INPUT_ACTIONS::UP))
     {
         vel.y = 1.f;
     }
-    if (inputSystem.keyPressed(INPUTS::DOWN))
+    if (inputSystem.actionKeyPressed(INPUT_ACTIONS::DOWN))
     {
         vel.y = -1.f;
     }
-    if (inputSystem.keyPressed(INPUTS::LEFT))
+    if (inputSystem.actionKeyPressed(INPUT_ACTIONS::LEFT))
     {
         vel.x = -1.f;
     }
-    if (inputSystem.keyPressed(INPUTS::RIGHT))
+    if (inputSystem.actionKeyPressed(INPUT_ACTIONS::RIGHT))
     {
         vel.x = 1.f;
     }
