@@ -6,12 +6,36 @@
 #include <crtdbg.h>
 #endif
 
+#include <bx/math.h>
+
 #include "GameEngine.h"
 #include "RenderEngine.h"
 #include "RenderThread.h"
 #include "CubeGameObject.h"
 #include "GameTimer.h"
+#include "InputSystem.h"
+#include "INIReader.h"
 
+void getInputVelocity(InputSystem& inputSystem, bx::Vec3& vel)
+{
+    vel = { 0.f, 0.f, 0.f };
+    if (inputSystem.keyPressed(INPUTS::UP))
+    {
+        vel.y = 1.f;
+    }
+    if (inputSystem.keyPressed(INPUTS::DOWN))
+    {
+        vel.y = -1.f;
+    }
+    if (inputSystem.keyPressed(INPUTS::LEFT))
+    {
+        vel.x = -1.f;
+    }
+    if (inputSystem.keyPressed(INPUTS::RIGHT))
+    {
+        vel.x = 1.f;
+    }
+}
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -22,6 +46,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #if defined(_DEBUG)
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
+
+    InputSystem inputSystem("input_config.ini");
+    bx::Vec3 cubePosition(bx::init::Zero);
+    bx::Vec3 cubeVelocity(bx::init::Zero);
 
     GameTimer timer;
 
@@ -48,8 +76,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         {
             float t = 0;
             timer.Tick();
+            
             t = sin(timer.TotalTime())*2;
-            cube->SetPosition(t, 0.0f, 0.0f);
+            
+            getInputVelocity(inputSystem, cubeVelocity);
+            cubePosition = bx::add(cubePosition, bx::mul(cubeVelocity, 0.01f));
+            OutputDebugStringW(L"BEGIN: someFunction()");
+
+            cube->SetPosition(cubePosition.x, 0.0f, cubePosition.y);
+           
 
             renderThread->OnEndFrame();
         }
