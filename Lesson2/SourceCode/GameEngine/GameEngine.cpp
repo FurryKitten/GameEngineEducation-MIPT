@@ -77,15 +77,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             float t = 0;
             timer.Tick();
             
-            t = sin(timer.TotalTime())*2;
+            //t = sin(timer.TotalTime())*2;
             
             getInputVelocity(inputSystem, cubeVelocity);
             cubePosition = bx::add(cubePosition, bx::mul(cubeVelocity, 0.01f));
-            OutputDebugStringW(L"BEGIN: someFunction()");
-
             cube->SetPosition(cubePosition.x, 0.0f, cubePosition.y);
            
-
             renderThread->OnEndFrame();
         }
     }
