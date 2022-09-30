@@ -6,13 +6,39 @@
 #include <crtdbg.h>
 #endif
 
+#include "Objects/ControllableCubeGameObject.h"
+#include "Objects/PhysicsCubeObject.h"
+#include "Objects/MovingCubeObject.h"
 #include "GameEngine.h"
 #include "RenderEngine.h"
 #include "RenderThread.h"
-#include "CubeGameObject.h"
-#include "GameTimer.h"
 #include "InputHandler.h"
 
+int randomInt(int from, int to)
+{
+    return from + rand() % (to - from + 1);
+}
+
+GameObject* createRandomCube(RenderThread* renderThread, GameTimer* timer, InputHandler* inputHandler)
+{
+    int objType = randomInt(0, 2);
+    GameObject* newObj = NULL;
+    switch (objType) 
+    {
+    case 0:
+        newObj = new PhysicsCubeObject();
+        break;
+    case 1:
+        newObj = new MovingCubeObject();
+        break;
+    case 2:
+        newObj = new ControllableCubeGameObject(*inputHandler);
+        break;
+    }
+    newObj->SetTimer(timer);
+    renderThread->EnqueueCommand(RC_CreateCubeRenderObject, newObj->GetRenderProxy());
+    return newObj;
+}
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -24,14 +50,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
+    srand(time(NULL));
+
     GameTimer timer;
 
     RenderEngine* renderEngine = new RenderEngine(hInstance);
     RenderThread* renderThread = renderEngine->GetRT();
     InputHandler* inputHandler = new InputHandler();
 
-    GameObject* cube = new CubeGameObject();
-    renderThread->EnqueueCommand(RC_CreateCubeRenderObject, cube->GetRenderProxy());
+
+    GameObject* randomObjects[100];
+    for (int i = 0; i < 100; ++i)
+    {
+        randomObjects[i] = createRandomCube(renderThread, &timer, inputHandler);
+        randomObjects[i]->SetPosition((i % 10) * 2.f, 0.0f, (i / 10) * 2.f);
+    }
 
     MSG msg = { 0 };
 
@@ -52,17 +85,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         {
             inputHandler->Update();
 
-            float t = 0;
             timer.Tick();
-            t = sin(timer.TotalTime())*2;
 
-            float velocity = 0.0f;
-            if (inputHandler->GetInputState().test(eIC_GoLeft))
-                velocity -= 1.0f;
-            if (inputHandler->GetInputState().test(eIC_GoRight))
-                velocity += 1.0f;
-            newPositionX += velocity * timer.DeltaTime();
-            cube->SetPosition(newPositionX, 0.0f, 0.0f);
+            for (const auto& obj : randomObjects)
+            {
+                obj->Update();
+            }
 
             renderThread->OnEndFrame();
         }
