@@ -115,6 +115,40 @@ void RenderEngine::CreateCubeRenderObject(RenderProxy* renderProxy)
 	m_renderObjects.emplace_back(renderObject);
 }
 
+void RenderEngine::CreateProjectileRenderObject(RenderProxy* renderProxy)
+{
+	RenderObject* renderObject = new ProjectileRenderObject(renderProxy);
+
+	IRenderData* renderData = m_pRenderBackend->CreateRenderObject(
+		renderObject->GetVertices(), renderObject->GetVerticesSize(),
+		renderObject->GetIndices(), renderObject->GetIndicesSize(),
+		renderObject->GetVsShaderName(), renderObject->GetPsShaderName()
+	);
+
+	renderObject->SetRenderData(renderData);
+	m_renderObjects.emplace_back(renderObject);
+}
+
+void RenderEngine::DeleteRenderObject(RenderProxy* renderProxy)
+{
+	for (auto it = m_renderObjects.begin(); it != m_renderObjects.end();)
+	{
+		if ((*it)->GetRenderProxy() == renderProxy)
+		{
+			it = m_renderObjects.erase(it);
+			continue;
+		}
+		++it;
+	}
+
+	/*m_renderObjects.erase(std::remove(m_renderObjects.begin(), m_renderObjects.end(), 
+		[&renderProxy](RenderObject* obj) {
+			return obj->GetRenderProxy() == renderProxy;
+		}
+		), m_renderObjects.end()
+	);*/
+}
+
 RenderThread* const RenderEngine::GetRT()
 {
 	return m_pRT;

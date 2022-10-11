@@ -24,16 +24,28 @@ EntitySystem::EntitySystem(RenderEngine* renderEngine, InputHandler* inputHandle
         .set(Gravity{ 0.f, -9.8065f, 0.f })
         .set(BouncePlane{ 0.f, 1.f, 0.f, 0.f })
         .set(Bounciness{ 0.3f })
+        .set(Ammunition{ 3, 3, 0.0f, 1.0f, false })
         .add<Controllable>()
         .add<CubeMesh>();
-
-    auto cubeMoving = ecs.entity()
-        .set(Position{ 0.f, 0.f, 0.f })
-        .set(Velocity{ 0.f, 3.f, 0.f })
-        .set(Gravity{ 0.f, -9.8065f, 0.f })
-        .set(BouncePlane{ 0.f, 1.f, 0.f, 5.f })
-        .set(Bounciness{ 1.f })
-        .add<CubeMesh>();
+    
+    for (int i = -2; i <= 2; ++i)
+    {
+        ecs.entity()
+            .set(Position{ i * 2.2f - 2.f, 0.f, 4.f })
+            .set(Velocity{ 0.f, 3.f, 0.f })
+            .set(Gravity{ 0.f, -9.8065f, 0.f })
+            .set(BouncePlane{ 0.f, 1.f, 0.f, 0.f })
+            .set(Bounciness{ 0.9f })
+            .set(BoxSize{ 1.f, 1.f, 1.f })
+            .add<Enemy>()
+            .add<CubeMesh>();
+    }
+ 
+    for (int i = 0; i < 100; ++i)
+    {
+        ecs.entity()
+            .add<Projectile>();
+    }
 }
 
 void EntitySystem::Update()

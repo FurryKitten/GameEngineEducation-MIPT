@@ -20,6 +20,8 @@ class RenderEngine;
 enum ERenderCommand : UINT32
 {
 	RC_CreateCubeRenderObject = 0,
+	RC_CreateProjectileRenderObject = 1,
+	RC_DeleteRenderObject = 2
 };
 
 class RENDERENGINE_API RenderThread

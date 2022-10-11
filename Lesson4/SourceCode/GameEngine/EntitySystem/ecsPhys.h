@@ -6,6 +6,11 @@ struct Position
 	float x, y, z;
 };
 
+struct BoxSize
+{
+	float x, y, z;
+};
+
 struct Velocity
 {
 	float x, y, z;
@@ -35,6 +40,15 @@ struct FrictionAmount
 {
   float val;
 };
+
+struct Timer
+{
+	float time;
+	float timeToAction;
+	bool active;
+};
+
+static bool aabbIntersect(Position p1, BoxSize b1, Position p2, BoxSize b2);
 
 typedef float Speed;
 
