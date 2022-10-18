@@ -6,7 +6,7 @@
 
 InputHandler::InputHandler()
 {
-	m_strMapFilePath = "../../../Assets/Configs/actionmap.ini";
+	m_strMapFilePath = "../../../Assets/Configs/actionmapScripts.ini";
 	std::replace(m_strMapFilePath.begin(), m_strMapFilePath.end(), '\\', '/');
 
 	MapSymbol("a", 'A');

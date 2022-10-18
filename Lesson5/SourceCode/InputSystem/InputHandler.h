@@ -7,7 +7,7 @@
 #include "Input.h"
 #include "INIReader.h"
 
-class InputHandler
+class INPUTSYSTEM_API InputHandler
 {
 public:
 	InputHandler();

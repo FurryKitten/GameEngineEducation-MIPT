@@ -1,5 +1,6 @@
 #pragma once
 #include "flecs.h"
+#include "../../InputSystem/InputHandler.h"
 
 struct Controllable {};
 struct JumpSpeed { float val; };

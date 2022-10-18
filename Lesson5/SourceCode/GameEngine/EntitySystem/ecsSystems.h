@@ -7,5 +7,10 @@ struct InputHandlerPtr
 
 struct RenderEnginePtr
 {
-  class RenderEngine* ptr;
+	class RenderEngine* ptr;
+};
+
+struct ScriptSystemPtr
+{
+	class CScriptSystem* ptr;
 };
