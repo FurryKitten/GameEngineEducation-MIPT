@@ -1,0 +1,65 @@
+<entities>
+    <entity name="cubeControl">
+        <transform>
+            <position>
+                <x>0.0</x>
+                <y>5.0</y>
+                <z>0.0</z>
+            </position>
+        </transform>
+        <physics>
+            <velocity>
+                <x>0.0</x>
+                <y>0.0</y>
+                <z>0.0</z>
+            </velocity>
+            <friction>0.9</friction>
+            <bounciness>0.3</bounciness>
+            <gravity>
+                <x>0.0</x>
+                <y>-9.8065</y>
+                <z>0.0</z>
+            </gravity>
+            <bouncePlane>
+                <x>0.0</x>
+                <y>1.0</y>
+                <z>0.0</z>
+                <w>0.0</w>
+            </bouncePlane>
+        </physics>
+        <scripts>
+            <script filename="../../../Assets/scripts/movable.lua"/>
+            <script filename="../../../Assets/scripts/jumpable.lua"/>
+        </scripts>
+        <mesh type="cubeMesh"/>
+    </entity>
+    <entity name="cubeMoving">
+        <transform>
+            <position>
+                <x>2.0</x>
+                <y>0.0</y>
+                <z>3.0</z>
+            </position>
+        </transform>
+        <physics>
+            <velocity>
+                <x>0.0</x>
+                <y>3.0</y>
+                <z>0.0</z>
+            </velocity>
+            <bounciness>1.0</bounciness>
+            <gravity>
+                <x>0.0</x>
+                <y>-9.8065</y>
+                <z>0.0</z>
+            </gravity>
+            <bouncePlane>
+                <x>0.0</x>
+                <y>1.0</y>
+                <z>0.0</z>
+                <w>0.0</w>
+            </bouncePlane>
+        </physics>
+        <mesh type="cubeMesh"/>
+    </entity>
+</entities>
